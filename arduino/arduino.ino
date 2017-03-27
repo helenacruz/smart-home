@@ -1,22 +1,37 @@
+#include <EnableInterrupt.h>
+
 #define DEBUG 1
 #define READINGS 99
+
+/* sensors/actuators pins */
 
 const int temp_pin = A0;
 const int light_pin = A4;
 const int flame_pin = 12;
-
-const int yellow_button = 2;
-const int blue_button = 3;
-
+const int white_button = 3;
+const int blue_button = 4;
+const int mode_button = 2;
 const int blue_led = 7;
-const int yellow_led = 5;
-
+const int white_led = 5;
 const int buzzer = 11;
 
-bool fire;
-bool buzzer_on;
+/* sensors/actuators IDs */
 
+const int flame_id = 0;
+const int white_button_id = 1;
+const int blue_button_id = 2;
+const int mode_button_id = 3;
+
+#define NR_DEVICES 4
+
+/* state variables */
+
+volatile int device_state;
+volatile bool fire;
+bool buzzer_on;
 unsigned long buzzer_millis;
+
+/* to stabilize the readings */
 
 int temp_readings;
 float temp_avg;
@@ -35,11 +50,19 @@ void setup()
   pinMode(temp_pin, INPUT);
   pinMode(light_pin, INPUT);
   pinMode(flame_pin, INPUT);
-  pinMode(yellow_button, INPUT);
+  pinMode(white_button, INPUT);
   pinMode(blue_button, INPUT);
   pinMode(blue_led, OUTPUT);
-  pinMode(yellow_led, OUTPUT);
+  pinMode(white_led, OUTPUT);
   pinMode(buzzer, OUTPUT);
+
+  for (int i = 0; i < NR_DEVICES; i++) {
+    bitClear(device_state, i);
+  }
+
+  enableInterrupt(mode_button, mode_button_isr, RISING);
+  enableInterrupt(white_button, white_button_isr, RISING);
+  enableInterrupt(blue_button, blue_button_isr, RISING);
 
   fire = false;
   buzzer_on = false;
@@ -153,5 +176,60 @@ void play_buzzer()
       }
     }
   }
+}
+
+/* interrupt routines */
+
+void flame_isr()
+{
+  if (DEBUG) {
+    Serial.println("Flame isr");
+  }
+  bitSet(device_state, flame_id);
+}
+
+void blue_button_isr()
+{
+  static unsigned long last_interrupt_time = 0;
+  unsigned long interrupt_time = millis();
+  
+  if (interrupt_time - last_interrupt_time > 200) {
+    bitSet(device_state, blue_button_id);
+    if (DEBUG) {
+      Serial.println("Blue isr");
+    }
+  }
+  
+  last_interrupt_time = interrupt_time;
+}
+
+void white_button_isr()
+{
+  static unsigned long last_interrupt_time = 0;
+  unsigned long interrupt_time = millis();
+  
+  if (interrupt_time - last_interrupt_time > 200) {
+    bitSet(device_state, white_button_id);
+    if (DEBUG) {
+      Serial.println("White isr");
+    }
+  }
+  
+  last_interrupt_time = interrupt_time;
+}
+
+void mode_button_isr()
+{
+  static unsigned long last_interrupt_time = 0;
+  unsigned long interrupt_time = millis();
+  
+  if (interrupt_time - last_interrupt_time > 200) {
+    bitSet(device_state, mode_button_id);
+    if (DEBUG) {
+      Serial.println("Mode isr");
+    }
+  }
+  
+  last_interrupt_time = interrupt_time;
 }
 
