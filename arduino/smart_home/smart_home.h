@@ -31,6 +31,33 @@ const int temp_id = 5;
 const int blue_led_id = 6;
 const int white_led_id = 7;
 
+/* structs for linking device <-> property */
+
+struct led
+{
+  int id;
+  int status; 
+  int intensity;
+};
+
+struct flame
+{
+  int id;
+  int on_fire;
+};
+
+struct sensor
+{
+  int id;
+  int value;
+};
+
+struct button
+{
+  int id;
+  int status;
+};
+
 /* prototypes */
 
 void read_temperature();

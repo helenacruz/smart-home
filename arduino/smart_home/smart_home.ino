@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <EnableInterrupt.h>
 #include "smart_home.h"
-#include "devices.h"
 
 /* extern variables */
 
