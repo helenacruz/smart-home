@@ -7,9 +7,17 @@
 extern bool sending;
 extern bool receiving;
 
+extern const struct led blue_led_t;
+extern const struct led white_led_t;
+extern const struct flame flame_t;
+extern const struct sensor temp_sensor_t;
+extern const struct button blue_button_t;
+extern const struct button white_button_t;
+extern const struct button mode_button_t;
+
 /* state variables */
 
-volatile int device_state;
+volatile byte device_state;
 volatile bool fire;
 volatile bool auto_mode;
 volatile bool white_led_on;
@@ -24,7 +32,7 @@ int light_value; // 0 - 100%
 
 void setup()
 {
-  if (DEBUG) {
+  if (DEBUG || DEBUG_COMM) {
     Serial.begin(9600);
   }
   pinMode(temp_pin, INPUT);
@@ -43,7 +51,6 @@ void setup()
   enableInterrupt(mode_button, mode_button_isr, RISING);
   enableInterrupt(white_button, white_button_isr, RISING);
   enableInterrupt(blue_button, blue_button_isr, RISING);
-  enableInterrupt(flame_pin, flame_isr, RISING);
 
   fire = false;
   auto_mode = false;
@@ -159,16 +166,18 @@ void read_white_pot()
     int reading = analogRead(white_pot);
     if (reading != pot_value) {
       analogWrite(white_led, reading / 4);
+      bitSet(device_state, white_led_id);
       pot_value = reading;
     }
   }
 }
 
-void read_flame()
+int read_flame()
 {
   int flame = digitalRead(flame_pin);
+  int status;
 
-  if (!fire == flame) {
+  if (fire == flame) {
     bitSet(device_state, flame_id);
   }
 
@@ -177,10 +186,12 @@ void read_flame()
       Serial.println("Fire");
     }
     fire = true;
+    return ON_FIRE;
   }
   else {
     fire = false;
     noTone(buzzer);
+    return NOT_ON_FIRE;
   }
 }
 
@@ -208,14 +219,6 @@ void play_buzzer()
 }
 
 /* interrupt routines */
-
-void flame_isr()
-{
-  if (DEBUG) {
-    Serial.println("Flame isr");
-  }
-  bitSet(device_state, flame_id);
-}
 
 void blue_button_isr()
 {
@@ -282,13 +285,93 @@ void mode_button_isr()
 
 void check_status()
 {
+  if (DEBUG || DEBUG_COMM) {
+    // Serial.println("Checking status");
+  }
   if (sending) {
     return;
   }
-  /*if (BitRead(device_state, flame_id)) {
+  if (bitRead(device_state, flame_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("Flame bit on");
+    }
     sending = true;
-    make_flame_msg(
-  }*/
+    make_flame_msg(flame_t.on_fire, read_flame());
+    bitClear(device_state, flame_id);
+  }
+  // white led has changed its status
+  else if (bitRead(device_state, white_button_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("White button bit on");
+    }
+    sending = true;
+    bitClear(device_state, white_button_id);
+    if (white_led_on) {
+      make_led_msg(white_led_id, white_led_t.status, ON);
+    }
+    else {
+      make_led_msg(white_led_id, white_led_t.status, OFF);
+    }
+  }
+  // blue led has changed its status
+  else if (bitRead(device_state, blue_button_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("Blue button bit on");
+    }
+    sending = true;
+    bitClear(device_state, blue_button_id);
+    if (blue_led_on) {
+      make_led_msg(blue_led_id, blue_led_t.status, ON);
+    }
+    else {
+      make_led_msg(blue_led_id, blue_led_t.status, OFF);
+    }
+  }
+  else if (bitRead(device_state, mode_button_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("Mode button bit on");
+    }
+    sending = true;
+    bitClear(device_state, mode_button_id);
+    if (auto_mode) {
+      make_button_msg(mode_button_id, mode_button_t.status, AUTO);
+    }
+    else {
+      make_button_msg(mode_button_id, mode_button_t.status, MANUAL);
+    }
+  }
+  else if (bitRead(device_state, blue_led_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("Blue led bit on");
+    }
+    sending = true;
+    bitClear(device_state, blue_led_id);
+    make_led_msg(blue_led_id, blue_led_t.intensity, blue_led_value);
+  }
+  else if (bitRead(device_state, temp_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("Temp bit on");
+    }
+    sending = true;
+    bitClear(device_state, temp_id);
+    make_sensor_msg(temp_id, temp_sensor_t.value, temp_value);
+  }
+  else if (bitRead(device_state, blue_led_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("Blue led bit on");
+    }
+    sending = true;
+    bitClear(device_state, blue_led_id);
+    make_led_msg(blue_led_id, blue_led_t.intensity, blue_led_value);
+  }
+  else if (bitRead(device_state, white_led_id)) {
+    if (DEBUG_COMM) {
+      Serial.println("White led bit on");
+    }
+    sending = true;
+    bitClear(device_state, white_led_id);
+    make_led_msg(white_led_id, white_led_t.intensity, white_led_value);
+  }
 }
 
 void check_messages()
