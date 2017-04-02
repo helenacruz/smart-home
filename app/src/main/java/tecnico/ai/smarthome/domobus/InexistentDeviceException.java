@@ -1,4 +1,4 @@
-package pt.tecnico.ai.domobus;
+package tecnico.ai.smarthome.domobus;
 
 public class InexistentDeviceException extends Exception
 {

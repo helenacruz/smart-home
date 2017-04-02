@@ -1,4 +1,4 @@
-package pt.tecnico.ai.domobus;
+package tecnico.ai.smarthome.domobus;
 
 public class Enumerated extends Value
 {
