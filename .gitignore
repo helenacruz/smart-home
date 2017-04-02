@@ -78,3 +78,7 @@ cmake-build-debug/*
 *.exe
 *.out
 *.app
+
+# Maven
+out/*
+target/*
