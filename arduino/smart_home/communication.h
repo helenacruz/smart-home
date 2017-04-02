@@ -3,14 +3,14 @@
 
 /* communication */
 
-#define MSG_SIZE 4
+#define MSG_SIZE 6
 
 bool sending = false;
 bool receiving = false;
 
-byte in_message[MSG_SIZE];
-byte out_message[MSG_SIZE];
+char in_message[MSG_SIZE];
+char out_message[MSG_SIZE];
 
-void print_message(byte *data);
+void print_message(char *data);
 
 #endif

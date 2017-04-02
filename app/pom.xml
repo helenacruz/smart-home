@@ -14,7 +14,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <mainclass>tecnico.ai.smarthome.communication.Main</mainclass>
+        <mainclass>tecnico.ai.smarthome.communication.SerialPortReader</mainclass>
     </properties>
 
     <dependencies>
@@ -52,9 +52,6 @@
                     <!-- to prevent deprecation warning: -->
                     <killAfter>-1</killAfter>
                     <mainClass>${mainclass}</mainClass>
-                    <arguments>
-                        <argument>${file}</argument>
-                    </arguments>
                 </configuration>
             </plugin>
             <plugin>

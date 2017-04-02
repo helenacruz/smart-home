@@ -3,10 +3,9 @@
 
 #include <Arduino.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define DEBUG_COMM 1
 #define NR_DEVICES 6
-#define ARDUINO_ID 1
 
 /* sensors/actuators pins */
 
