@@ -30,7 +30,7 @@
 <Type>Sensor</Type>
 <Name>Temperature Sensor</Name>
 <Value>0</Value>
-<Itensity>20</Itensity>
+<Itensity></Itensity>
 </Device>
 
 <Device>
@@ -38,7 +38,6 @@
 <Type>Sensor</Type>
 <Name>Luminosity Sensor</Name>
 <Value>0</Value>
-<Itensity>1</Itensity>
 </Device>
 
 <Device>

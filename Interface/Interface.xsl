@@ -88,6 +88,14 @@ tell processor to process the entire document with this template.
 		-ms-transform: translateX(26px);
 		transform: translateX(26px);
 	}
+	
+	.Canvas {
+		display: none;
+	}
+	
+	.bar {
+		display: none;
+	}
 	</style>
 	  </head>
 		
@@ -96,8 +104,7 @@ tell processor to process the entire document with this template.
 		 <h2>Smart Home Arduino</h2>
 		 <xsl:for-each select="Devices/Device">
 		 <xsl:sort select="ID"/>
-		 <button class="button" type="{Type}" onclick ="MakeCanvas(this)" value="{Value}" id="{ID}" name="{Name}"> <xsl:if test="Itensity" ><xsl:attribute name="itensity"><xsl:text>1</xsl:text></xsl:attribute></xsl:if>
-		 
+		 <button class="button" onclick ="MakeCanvas(this)" category="{Type}" value="{Value}" id="{ID}" name="{Name}"><xsl:if test="Itensity" ><xsl:attribute name="itensity"><xsl:value-of select="Itensity"/></xsl:attribute></xsl:if>
 		 <xsl:value-of select="Name"/><br/>
 			<xsl:choose>
 				<xsl:when test="Value=0">
@@ -114,19 +121,37 @@ tell processor to process the entire document with this template.
 
 		<xsl:choose>
 				<xsl:when test="Itensity">
-				Itensity:<xsl:value-of select="Itensity"/>
+				Itensity:
+				<xsl:choose>
+				<xsl:when test = "Itensity=1">
+				Low
+				</xsl:when>
+				<xsl:when test = "Itensity=2">
+				Medium
+				</xsl:when>
+				<xsl:when test = "Itensity=3">
+				High
+				</xsl:when>
+				<xsl:otherwise>
+				NaN
+				</xsl:otherwise>
+				</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise>
 				<br/> <!-- insert so that buttons are all the same size -->
 				</xsl:otherwise>
-		</xsl:choose> 
+		</xsl:choose>
 		</button>
 		</xsl:for-each>
-		<div id ="Canvas"><span id="device_name"></span>
+		<div class ="Canvas" id="Canvas"><span id="device_name"></span>
 		<br/>  <br/>  
-			<span class="characteristic">Itensity:</span>
+			<span class="bar" id="bar" >Itensity:
 			<input type="range" id="weight" min="1" value="0" max="3" step="1" oninput="outputUpdate(value)" />
 			<output for="weight" id="itensity_chosen">Low</output>
+			</span>
+			<span class="log" id="log">
+				
+			</span>
 			<p/>
 			<label class="switch">
 				<input id="checkbox" type="checkbox" onclick="UpdateSwitch()"/>

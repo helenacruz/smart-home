@@ -1,9 +1,10 @@
 var Switch = 0;
 var value = 1;
+var button_pressed=null;
 var result;
+var slidebar;
 
 function outputUpdate(value){
-console.log(value);
 	if(value==1)
 		result= "Low";
 	else if( value==2)
@@ -13,7 +14,7 @@ console.log(value);
 
 var d = document.getElementById("itensity_chosen");
 d.innerHTML=result;
-d= document.getElementById("0");
+d= document.getElementById(button_pressed);
 d.itensity=result;
 d.innerHTML=d.name;
 d.innerHTML+="<br/>";
@@ -29,7 +30,8 @@ d.innerHTML+=d.itensity;
 
 function UpdateSwitch(){
 	var d;
-	d= document.getElementById('0');
+	console.log(button_pressed);
+	d= document.getElementById('button_pressed');
 	var result;
 	if(Switch == 0){
 		result = 1;
@@ -55,6 +57,27 @@ function UpdateSwitch(){
 }
 
 function MakeCanvas(el){
-	console.log(document.getElementById("device_name"));
+	CleanCanvas();
+	var canvas = document.getElementById("Canvas");
+	canvas.style.display="inline-block";
+	if(button_pressed!=null){
+		var last = document.getElementById(button_pressed);
+		last.style.background="#d3d3d3";
+	}
+	el.style.background="#0000FF";
+	button_pressed=el.id;
 	document.getElementById("device_name").innerHTML=el.name;
+	if(el.getAttribute("category")=="LED"){
+		slidebar = document.getElementById("bar");
+		slidebar.style.display="inline-block";
+	}
+	
+}
+
+function CleanCanvas(){
+	var canvas = document.getElementById("Canvas");
+	canvas.style.display="inline-block";
+	slidebar = document.getElementById("bar");
+	if(slidebar.style.display!="none")
+		slidebar.style.display="none";
 }
