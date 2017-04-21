@@ -25,7 +25,7 @@ tell processor to process the entire document with this template.
 	  
 	  <style>
 	.button {
-		border: 1;
+	border: solid;
 		background-color: #d3d3d3;
 		color: black;
 		padding: 10px 32px 0px 50px;
@@ -90,12 +90,54 @@ tell processor to process the entire document with this template.
 	}
 	
 	.Canvas {
+		width: 100%;
+		height: 230px;
 		display: none;
+		border-style: double;
 	}
 	
 	.bar {
 		display: none;
+		padding-left: 50px;
 	}
+	
+	.device_name{
+		font-size: 30px;
+		text-transform: uppercase;
+	}
+	
+	.regulator{
+		display: none;
+		padding-left: 50px;
+		width: 100%;
+		height: 80px;
+	}
+	
+	.button2 {
+		border: solid;
+		background-color: #d3d3d3;
+		color: black;
+		width: 60px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	
+	.temp_value {
+		border: solid;
+		color: black;
+		width: 40px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	
 	</style>
 	  </head>
 		
@@ -121,19 +163,18 @@ tell processor to process the entire document with this template.
 
 		<xsl:choose>
 				<xsl:when test="Itensity">
-				Itensity:
 				<xsl:choose>
 				<xsl:when test = "Itensity=1">
-				Low
+				Itensity: Low
 				</xsl:when>
 				<xsl:when test = "Itensity=2">
-				Medium
+				Itensity: Medium
 				</xsl:when>
 				<xsl:when test = "Itensity=3">
-				High
+				Itensity: High
 				</xsl:when>
 				<xsl:otherwise>
-				NaN
+				<br/>
 				</xsl:otherwise>
 				</xsl:choose>
 				</xsl:when>
@@ -143,7 +184,7 @@ tell processor to process the entire document with this template.
 		</xsl:choose>
 		</button>
 		</xsl:for-each>
-		<div class ="Canvas" id="Canvas"><span id="device_name"></span>
+		<div class ="Canvas" id="Canvas"><span class="device_name" id="device_name"></span>
 		<br/>  <br/>  
 			<span class="bar" id="bar" >Itensity:
 			<input type="range" id="weight" min="1" value="0" max="3" step="1" oninput="outputUpdate(value)" />
@@ -153,7 +194,12 @@ tell processor to process the entire document with this template.
 				
 			</span>
 			<p/>
-			<label class="switch">
+			<label class="regulator" id="regulator">
+			<button class="button2" onclick="DecreaseTemp()">-</button>
+			<span class="temp_value" id="temp_value"></span>
+			<button class="button2" onclick="IncreaseTemp()">+</button>
+			</label>
+			<label class="switch" >
 				<input id="checkbox" type="checkbox" onclick="UpdateSwitch()"/>
 				<div class="slider"></div>
 			</label>

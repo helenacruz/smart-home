@@ -30,21 +30,5 @@
 <Type>Sensor</Type>
 <Name>Temperature Sensor</Name>
 <Value>0</Value>
-<Itensity></Itensity>
+<Itensity>23</Itensity>
 </Device>
-
-<Device>
-<ID>4</ID>
-<Type>Sensor</Type>
-<Name>Luminosity Sensor</Name>
-<Value>0</Value>
-</Device>
-
-<Device>
-<ID>5</ID>
-<Type>Sensor</Type>
-<Name>Presence Sensor</Name>
-<Value>0</Value>
-</Device>
-
-</Devices>
