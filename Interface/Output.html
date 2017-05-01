@@ -1,0 +1,156 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="Interface.js"></script>
+<title>Arduino SmartHome</title>
+<style>
+	.button {
+	border: solid;
+		background-color: #d3d3d3;
+		color: black;
+		padding: 10px 32px 0px 50px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	
+	 /* The switch - the box around the slider */
+		.switch {
+		position: relative;
+		display: inline-block;
+		width: 63px;
+		height: 34px;
+	}
+
+	/* Hide default HTML checkbox */
+		.switch input {display:none;}
+
+	/* The slider */
+		.slider {
+
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+
+	.slider:before {
+		position: absolute;
+		content: "OFF";
+		height: 26px;
+		width: 30px;
+		left: 4px;
+		bottom: 4px;
+		background-color: white;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+
+	input:checked + .slider {
+		background-color: #2196F3;
+	}
+
+	input:focus + .slider {
+		box-shadow: 0 0 1px #2196F3;
+	}
+
+	input:checked + .slider:before {
+		content:"ON";
+		-webkit-transform: translateX(26px);
+		-ms-transform: translateX(26px);
+		transform: translateX(26px);
+	}
+	
+	.Canvas {
+		width: 100%;
+		height: 230px;
+		display: none;
+		border-style: double;
+	}
+	
+	.bar {
+		display: none;
+		padding-left: 50px;
+	}
+	
+	.device_name{
+		font-size: 30px;
+		text-transform: uppercase;
+	}
+	
+	.regulator{
+		display: none;
+		padding-left: 50px;
+		width: 100%;
+		height: 80px;
+	}
+	
+	.button2 {
+		border: solid;
+		background-color: #d3d3d3;
+		color: black;
+		width: 60px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	
+	.temp_value {
+		border: solid;
+		color: black;
+		width: 40px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	
+	</style>
+</head>
+<body>
+<h2>Smart Home Arduino</h2>
+<button class="button" onclick="MakeCanvas(this)" category="LED" value="0" id="0" name="LED1" itensity="1">LED1<br>
+				OFF
+				<br>
+				Itensity: Low
+				</button><button class="button" onclick="MakeCanvas(this)" category="LED" value="0" id="1" name="LED2" itensity="1">LED2<br>
+				OFF
+				<br>
+				Itensity: Low
+				</button><button class="button" onclick="MakeCanvas(this)" category="Sensor" value="0" id="2" name="Fire Alarm">Fire Alarm<br>
+				OFF
+				<br>
+<br>
+</button><button class="button" onclick="MakeCanvas(this)" category="Sensor" value="0" id="3" name="Temperature Sensor" itensity="23">Temperature Sensor<br>
+				OFF
+				<br>
+<br>
+</button>
+<div class="Canvas" id="Canvas">
+<span class="device_name" id="device_name"></span>
+<br>
+<br>
+<span class="bar" id="bar">Itensity:
+			<input type="range" id="weight" min="1" value="0" max="3" step="1" oninput="outputUpdate(value)">
+<output for="weight" id="itensity_chosen">Low</output>
+</span><span class="log" id="log"></span>
+<p></p>
+<label class="regulator" id="regulator"><button class="button2" onclick="DecreaseTemp()">-</button><span class="temp_value" id="temp_value"></span><button class="button2" onclick="IncreaseTemp()">+</button></label><label class="switch"><input id="checkbox" type="checkbox" onclick="UpdateSwitch()">
+<div class="slider"></div>
+</label>
+</div>
+</body>
+</html>
