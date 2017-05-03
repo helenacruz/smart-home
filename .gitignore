@@ -82,3 +82,8 @@ cmake-build-debug/*
 # Maven
 out/*
 target/*
+/bin/
+
+#Eclipse
+.project
+.classpath

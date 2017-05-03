@@ -3,6 +3,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -24,14 +27,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
 
-
+import java.awt.Desktop;
 import java.io.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 
 public class Main
 {
-    public static void main(String[] args) throws FileNotFoundException, ParserConfigurationException, TransformerException
+    public static void main(String[] args) throws ParserConfigurationException, TransformerException, IOException
     {
     	File input = new File("Interface/Interface.xml");
     	File input2 = new File("Interface/Interface.xsl");
@@ -45,16 +48,17 @@ public class Main
     	
         
         File file = new File("Interface/Output.html");
-		try {
-			 Document doc = Jsoup.parse(file, "UTF-8");
-			 Elements buttons = (doc).getElementsByClass("button");
-		        System.out.print(buttons);
-		        for(Element el : buttons){
-		        	System.out.println(el);
-		        }
-		} catch (IOException e) {
+        try {
+			Desktop.getDesktop().browse(file.toURI());
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+        
+        String URL= "file:///"+file.getAbsolutePath();
+        
+        
+        
+		
     }
 }
