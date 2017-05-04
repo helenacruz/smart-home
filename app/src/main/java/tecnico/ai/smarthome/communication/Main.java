@@ -1,35 +1,24 @@
 package tecnico.ai.smarthome.communication;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Node;
+import tecnico.ai.smarthome.domobus.Device;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
 
 import java.awt.Desktop;
-import java.io.*;
-import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 
 public class Main
@@ -38,6 +27,7 @@ public class Main
     {
     	File input = new File("Interface/Interface.xml");
     	File input2 = new File("Interface/Interface.xsl");
+    	List<Device> myList = new ArrayList<Device>();
     	
     	TransformerFactory factory = TransformerFactory.newInstance();
         Source stylesheetSource = new StreamSource(new File("Interface/Interface.xsl").getAbsoluteFile());
@@ -54,6 +44,17 @@ public class Main
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        
+        Document dom = Jsoup.parse(file, "UTF-8");
+        
+        Elements devices = dom.getElementsByClass("button");
+        
+        for(int i =0;i<devices.size();i++){
+        	 Element e = (Element) devices.get(i);
+        	Device d = new Device(Integer.parseInt(e.attr("id")), e.attr("name"), null);
+        	myList.add(d);//integrate Domobus left
+        	System.out.println(d.getId());
+        }
         
         String URL= "file:///"+file.getAbsolutePath();
         
