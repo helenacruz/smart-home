@@ -63,6 +63,8 @@ function UpdateSwitch(){
 	}
 	else
 		d.innerHTML+="<br/>";	
+	
+	SendHTTP(d.getAttribute("id"),"itensity",d.getAttribute("itensity"));////EXAMPLE------------------------------------
 }
 
 function MakeCanvas(el){
@@ -99,14 +101,12 @@ function MakeCanvas(el){
 function IncreaseTemp(){
 	var ts = document.getElementById(button_pressed);
 	ts.setAttribute("itensity",parseInt(ts.getAttribute("itensity"))+1);
-	console.log(ts);
 	document.getElementById("temp_value").innerHTML =ts.getAttribute("itensity");
 }
 
 function DecreaseTemp(){
 	var ts = document.getElementById(button_pressed);
 	ts.setAttribute("itensity",parseInt(ts.getAttribute("itensity"))-1);
-	console.log(ts);
 	document.getElementById("temp_value").innerHTML =ts.getAttribute("itensity");
 }
 
@@ -120,4 +120,25 @@ function CleanCanvas(){
 	var regulator = document.getElementById("regulator");
 	if(regulator.style.display!="none")
 		regulator.style.display="none";
+}
+
+
+function Receive(id,i,value){
+	var d= document.getElementById(id);
+	if(i=='i')
+	d.setAttribute("itensity",value);
+	else
+	d.setAttribute("value",value);
+	
+	return document.documentElement.outerHTML;
+}
+
+function SendHTTP(id,category,value){
+	var message = "http://localhost:8000/r.html?id="+id+"&category="+category+"&value="+value;
+console.log(message);
+	var wnd = window.open(message);
+    setTimeout(function() {
+      wnd.close();
+    }, 100);
+    return false;
 }

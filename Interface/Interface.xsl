@@ -15,11 +15,11 @@ tell processor to process the entire document with this template.
       <!-- HTML tags 
          Used for formatting purpose. Processor will skip them and browser 
             will simply render them. 
-      --> 
+      -->
 	   <html> 
 	  <head>
-	  
-	  <script src="Interface.js"></script>
+	  <script src="Interface.js">
+	  </script>
 	  
 	  <title>Arduino SmartHome</title>
 	  
