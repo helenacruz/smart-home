@@ -10,6 +10,9 @@ public class Main
         SerialPortReader serialPortReader = new SerialPortReader();
 
         // TODO separate thread for the server
+        // Server server = new Server();
+        // O servidor estava a dar erro nos ficheiros, por isso e que
+        // comentei
 
         while (true) {
             serialPortReader.run(); // thread for the serial port

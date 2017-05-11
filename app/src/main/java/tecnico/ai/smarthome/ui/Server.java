@@ -135,7 +135,4 @@ public class Server extends Thread
 			e1.printStackTrace();
 		}	
     }
-    
-    
-    
 }
