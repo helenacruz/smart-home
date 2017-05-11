@@ -2,9 +2,10 @@
 #define SMART_HOME_H
 
 #include <Arduino.h>
+#include <Bounce2.h>
 
 #define DEBUG 0
-#define DEBUG_COMM 1
+#define COMM 1
 #define NR_DEVICES 6
 
 /* sensors/actuators pins */
@@ -47,6 +48,7 @@ struct led
   int id;
   int status; 
   int intensity;
+  int mode;
 };
 
 struct flame
@@ -69,8 +71,8 @@ struct button
 
 /* device structs */
 
-const struct led blue_led_t = { blue_led_id, 1, 2 };
-const struct led white_led_t = { white_led_id, 1, 1 };
+const struct led blue_led_t = { blue_led_id, 1, 2, 3 };
+const struct led white_led_t = { white_led_id, 1, 2, 3 };
 const struct flame flame_t = { flame_id, 1 };
 const struct sensor temp_sensor_t = { temp_id, 1 };
 const struct button blue_button_t = { blue_button_id, 1 };
@@ -84,11 +86,6 @@ void read_light();
 void read_white_pot();
 int read_flame();
 void play_buzzer();
-void blue_button_isr();
-void white_button_isr();
-void mode_button_isr();
-void white_pot_isr();
-void check_messages();
 
 void make_led_msg(int led, int prop_id, int value);
 void make_flame_msg(int prop_id, int value);
@@ -96,6 +93,10 @@ void make_sensor_msg(int sensor, int prop_id, int value);
 void make_button_msg(int button, int prop_id, int value);
 void send_answer();
 void send_error();
+void receive_message();
+void show_new_message();
+void parse_message();
+void do_something(int device, int property, int value);
 
 void print_message(byte *data);
 

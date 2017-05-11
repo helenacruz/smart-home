@@ -3,14 +3,10 @@
 
 /* communication */
 
-#define MSG_SIZE 6
+#define MSG_SIZE 32
 
-bool sending = false;
-bool receiving = false;
+String in_message;
 
-char in_message[MSG_SIZE];
-char out_message[MSG_SIZE];
-
-void print_message(char *data);
+void print_message(byte *data);
 
 #endif

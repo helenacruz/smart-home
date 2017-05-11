@@ -1,18 +1,4 @@
-package tecnico.ai.smarthome.communication;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+package tecnico.ai.smarthome.ui;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.ScriptResult;
@@ -21,66 +7,77 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import tecnico.ai.smarthome.domobus.Device;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.awt.*;
+import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.awt.Desktop;
-import javax.xml.transform.stream.*;
-
-public class Main
+public class Server extends Thread
 {
 	private static HttpHandler myhandler = new MyHandler();
-	
-    public static void main(String[] args) throws ParserConfigurationException, TransformerException, IOException, InterruptedException
+
+	public Server()
     {
-    	File input = new File("Interface/Interface.xml");
-    	File input2 = new File("Interface/Interface.xsl");
-    	List<Device> myList = new ArrayList<Device>();
-    	
-    	
-    	 HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-         server.createContext("/r.html", myhandler);
-         server.setExecutor(null); // creates a default executor
-         server.start();
-         System.out.println("Running server");
-    	
-    	TransformerFactory factory = TransformerFactory.newInstance();
-        Source stylesheetSource = new StreamSource(new File("Interface/Interface.xsl").getAbsoluteFile());
-        Transformer transformer = factory.newTransformer(stylesheetSource);
-        Source inputSource = new StreamSource(new File("Interface/Interface.xml").getAbsoluteFile());
-        Result outputResult = new StreamResult(new File("Interface/Output.html").getAbsoluteFile());
-        transformer.transform(inputSource, outputResult);
-    	
-        
-        File file = new File("Interface/Output.html");
         try {
-			Desktop.getDesktop().browse(file.toURI());
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        
-        Document dom = Jsoup.parse(file, "UTF-8");
-        
-        Elements devices = dom.getElementsByClass("button");
-        
-        for(int i =0;i<devices.size();i++){
-        	 Element e = (Element) devices.get(i);
-        	Device d = new Device(Integer.parseInt(e.attr("id")), e.attr("name"), null);
-        	myList.add(d);//integrate Domobus left
-        	System.out.println(d.getId());
+            File input = new File("Interface/Interface.xml");
+            File input2 = new File("Interface/Interface.xsl");
+            List<Device> myList = new ArrayList<Device>();
+
+
+            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+            server.createContext("/r.html", myhandler);
+            server.setExecutor(null); // creates a default executor
+            server.start();
+            System.out.println("Running server");
+
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Source stylesheetSource = new StreamSource(new File("Interface/Interface.xsl").getAbsoluteFile());
+            Transformer transformer = factory.newTransformer(stylesheetSource);
+            Source inputSource = new StreamSource(new File("Interface/Interface.xml").getAbsoluteFile());
+            Result outputResult = new StreamResult(new File("Interface/Output.html").getAbsoluteFile());
+            transformer.transform(inputSource, outputResult);
+
+
+            File file = new File("Interface/Output.html");
+            try {
+                Desktop.getDesktop().browse(file.toURI());
+            }
+            catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+
+            Document dom = Jsoup.parse(file, "UTF-8");
+
+            Elements devices = dom.getElementsByClass("button");
+
+            for (int i = 0; i < devices.size(); i++) {
+                Element e = (Element) devices.get(i);
+                Device d = new Device(Integer.parseInt(e.attr("id")), e.attr("name"), null);
+                myList.add(d);//integrate Domobus left
+                System.out.println(d.getId());
+            }
+
+            update(3, "intensity", 30);
         }
-        
-        update(3,"itensity",30);
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
     
     static class MyHandler implements HttpHandler {
         @Override
