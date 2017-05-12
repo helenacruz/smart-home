@@ -4,63 +4,33 @@ import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.ScriptResult;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import tecnico.ai.smarthome.domobus.Device;
-
+import tecnico.ai.smarthome.domobus.DomobBusSystem;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-import javax.xml.transform.SourceLocator;
-import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.awt.*;
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Server extends Thread
 {
-	private static HttpHandler myhandler = new MyHandler();
+	private DomobBusSystem domobus;
+		public Server() throws FailingHttpStatusCodeException, MalformedURLException, IOException, TransformerException{
 
-		public static void main(){
-        try {
-            File input = new File("Interface/Ui.xml");
-            File input2 = new File("Interface/Ui.xsl");
-            List<Device> myList = new ArrayList<Device>();
-
-
-            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-            server.createContext("/r.html", myhandler);
-            server.setExecutor(null); // creates a default executor
-            server.start();
-            System.out.println("Running server");
-            try{
+            File file = new File("Interface/Output.html");
             TransformerFactory factory = TransformerFactory.newInstance();
             Source stylesheetSource = new StreamSource(new File("Interface/Ui.xsl").getAbsoluteFile());
             Transformer transformer = factory.newTransformer(stylesheetSource);
             Source inputSource = new StreamSource(new File("Interface/Ui.xml").getAbsoluteFile());
             Result outputResult = new StreamResult(new File("Interface/Output.html").getAbsoluteFile());
             transformer.transform(inputSource, outputResult);
-            }
-            catch(Exception e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
             
             
-            File file = new File("Interface/Output.html");
+             file = new File("Interface/Output.html");
             try {
                 Desktop.getDesktop().browse(file.toURI());
             }
@@ -68,49 +38,36 @@ public class Server extends Thread
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-
-           /* Document dom = Jsoup.parse(file, "UTF-8");
-            Elements devices = dom.getElementsByClass("button");
-
-            for (int i = 0; i < devices.size(); i++) {
-                Element e = (Element) devices.get(i);
-                Device d = new Device(Integer.parseInt(e.attr("id")), e.attr("name"), null);
-                myList.add(d);//integrate Domobus left
-                System.out.println(d.getId());
-            }*/
-
-            update(4, 1, 30);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    static class MyHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
-            int id;
-            String category;
-            int value;
-            String[] params = t.getRequestURI().getQuery().split("&");
-            
-            
-            id = Integer.parseInt(params[0].split("=")[1]);
-            category = params[1].split("=")[1];
-            value = Integer.parseInt(params[2].split("=")[1]);
-            
-            System.out.println("id-->"+id);
-            System.out.println("cat-->"+category);
-            System.out.println("val-->"+value);
-            t.sendResponseHeaders(200,0);
-            OutputStream os = t.getResponseBody();
-            os.write( t.getRequestURI().getQuery().getBytes());
-            os.close();
-        }
+            /*
+            ////Putting everything into classes
+           Document dom = Jsoup.parse(file, "UTF-8");
+           Elements el = dom.getElementsByClass("House");
+           domobus = new DomobBusSystem(el.attr("id"), el.attr("name"), el.attr("division_id"), el.attr("division_name"));
+           el = dom.getElementsByClass("ScalarValueType");
+           for(Element e : el){
+        	   domobus.getScalars().add(new Scalar(e.attr("min"), e.attr("max"), e.attr("units"), e.attr("name")));
+           }
+           el = dom.getElementsByClass("EnumeValueType");
+           for(Element e : el){
+        	   domobus.getEnums().add(new Enumerated(e.attr("name")));
+           }
+           el = dom.getElementsByClass("DeviceType");
+           for(Element e : el){
+        	   domobus.getDevice_types().add(new DeviceType(e.attr("name")));
+           }
+           el = dom.getElementsByClass("Property");
+           for(Element e : el){
+        	   Property prop = new Property(e.attr("name"), null, e.attr("valuetype"), e.attr("refvaluetype"));
+        	   for(DeviceType d: domobus.getDevice_types()){
+        		   if(e.attr("parent_id").equals(d.getName())){
+        			   d.getProperties().put(prop.getName(), prop);
+        		   }
+        	   }
+           }*/
     }
     
     
-    public static void update(int id, int category, int new_value) throws FailingHttpStatusCodeException, MalformedURLException, IOException{
+    public void update(int id, int category, int new_value) throws FailingHttpStatusCodeException, MalformedURLException, IOException{
     	java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
     	File file = new File("Interface/Output.html");
         WebClient webClient = new WebClient(BrowserVersion.CHROME);
@@ -121,23 +78,24 @@ public class Server extends Thread
 		
 		String javaScriptCode="change(" + String.valueOf(id) + "," +"'"+category+"'" +","+String.valueOf(new_value)+")";
         webClient.waitForBackgroundJavaScript(10000);
-        //ScriptResult result = page.executeJavaScript(javaScriptCode);
+        ScriptResult result = page.executeJavaScript(javaScriptCode);
         webClient.close();
         file.delete();
         file = new File("Interface/Output.html");
         
         
-        /*String text = result.toString();
+        String text = result.toString();
         text=text.substring(20);
-        //text="<!DOCTYPE HTML>" + "\n" + text;
-        text=text.substring(0,text.length()-86);
+        text="<!DOCTYPE HTML>" + "\n" + text;
+        text=text.substring(0,text.length()-88);
         PrintStream out = new PrintStream(new FileOutputStream(file));
         out.print(text);
+        
         try {
 			Desktop.getDesktop().browse(file.toURI());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}	*/
+		}	
     }
 }

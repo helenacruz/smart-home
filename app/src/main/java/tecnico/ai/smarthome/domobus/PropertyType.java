@@ -9,18 +9,18 @@ public class PropertyType
 
     private String name;
     private AccessMode accessMode;
-    private ValueType valueType;
+    private String valueType;
     private HashMap<String, Integer> enumeration; // in case value is enumeration
 
-    public PropertyType(String name, AccessMode accessMode, ValueType valueType)
+    public PropertyType(String name, AccessMode accessMode, String valueType2)
     {
         this.name = name;
         this.accessMode = accessMode;
-        this.valueType = valueType;
+        this.valueType = valueType2;
         this.enumeration = null;
     }
 
-    public PropertyType(String name, AccessMode accessMode, ValueType valueType, HashMap<String, Integer> enumeration)
+    public PropertyType(String name, AccessMode accessMode, String valueType, HashMap<String, Integer> enumeration)
     {
         this.name = name;
         this.accessMode = accessMode;
@@ -48,12 +48,12 @@ public class PropertyType
         this.accessMode = acessMode;
     }
 
-    public ValueType getValueType()
+    public String getValueType()
     {
         return valueType;
     }
 
-    public void setValueType(ValueType valueType)
+    public void setValueType(String valueType)
     {
         this.valueType = valueType;
     }

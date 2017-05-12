@@ -1,0 +1,245 @@
+<html>
+<script src="Ui.js"></script>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Smart home</title>
+<style>
+	  header, footer
+{
+    width: 100%;
+}
+
+html, body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#title
+{
+    width: 100%;
+    color: #FFFFFF;
+    border: none;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+}
+
+#title h1
+{
+    margin-left: 10%;
+    font-size: 240%;
+}
+
+#title h2
+{
+    margin-left: 10%;
+    font-size:210%;
+}
+
+#title tr:nth-child(1)
+{
+    background: #00BFFF;
+    line-height: 500%;
+}
+
+#title tr:nth-child(2)
+{
+    background: #87CEFA;
+    line-height: 350%;
+}
+
+.devices
+{
+	display: inline-block;
+    margin-top: 3%;
+    width: 20%;
+	height: 50%;
+    font-family: 'Source Sans Pro', sans-serif;
+	border-spacing: 20px;
+}
+
+.devices
+{
+    font-size: 120%;
+    padding-left: 50px;
+}
+
+.switch 
+{
+	margin-top: 5px;
+    position: relative;
+    display: inline-block;
+	margin-left: 5px;
+	margin-right: 5px;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input
+{
+    display: none;
+}
+
+.slider
+{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before 
+{
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider
+{
+    background-color: #2196F3;
+}
+
+input:focus + .slider
+{
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before
+{
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.simple
+{
+    font-size: 150%;
+}
+
+.text
+{
+	position: relative;
+	bottom : 10px;
+	text-align: center;
+}
+
+#regul_intensity
+{
+width: 60%;
+}
+
+.none{
+display: none;
+}
+
+.buttons 
+{
+	text-align: center;	
+}
+
+
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Hind:400,700">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+</head>
+<body>
+<header>
+<table id="title">
+<tr>
+<th>
+<h1>SMART HOME</h1>
+</th>
+</tr>
+<tr>
+<th>
+<h2>Living Room</h2>
+</th>
+</tr>
+</table>
+</header>
+<table name="Ceiling lamp" id="1" value_i="0" value_m="false" value="false" category="2" class="devices">
+<th padding-left="10px">Ceiling lamp</th>
+<tr id="buttons">
+<tr>
+<td><span>OFF</span></td><td><label class="switch"><input oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)" id="regul_switch" type="checkbox">
+<div class="slider round"></div>
+</label></td><td><span>ON</span></td>
+</tr>
+<tr>
+<td><span>MANUAL</span></td><td><label class="switch"><input oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,1,-1)" id="regul_switch2" type="checkbox">
+<div class="slider round"></div>
+</label></td><td><span>AUTO</span></td>
+</tr>
+<tr>
+<td><span>0</span></td><td><input oninput="update(this.parentNode.parentNode.parentNode.parentNode.id,3,this.value)" step="10" max="100" value="0" min="0" id="regul_intensity" type="range"></td><td><span>100</span></td>
+</tr>
+</tr>
+</table>
+<table name="Table lamp" id="2" value="false" category="3" class="devices">
+<tr>
+<th padding-left="10px">Table lamp</th>
+</tr>
+<tr>
+<tr>
+<td><span>OFF</span></td><td><label class="switch"><input oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)" id="simple_switch" type="checkbox">
+<div class="slider round"></div>
+</label></td><td><span>ON</span></td>
+</tr>
+</tr>
+</table>
+<table name="Temperature" id="3" category="1" class="devices">
+<tr>
+<th>Temperature</th>
+</tr>
+<tr></tr>
+<tr>
+<td>
+<p id="temp_value" class="simple">21 DC</p>
+</td>
+</tr>
+</table>
+<table name="Fire alarm" id="4" category="4" class="devices">
+<tr>
+<th>Fire alarm</th>
+</tr>
+<tr>
+<td>
+<p id="alarm" class="simple">I am always Alert...</p>
+</td>
+</tr>
+</table>
+<div class="none">
+<div division_name="Living Room" division_id="1" name="SMART HOME" id="98" class="House"></div>
+<div step="1" max="40" min="0" Units="&quot;&ordm;C&quot;" Name="Temperature" id="1" class="ScalarValueType"></div>
+<div step="10" max="100" min="0" Units="&quot;%&quot;" Name="Itensity" id="2" class="ScalarValueType"></div>
+<div Name="State" id="1" class="EnumeValueType"></div>
+<div Name="Temperature sensor" id="1" class="DeviceType"></div>
+<div RefValueType="1" ValueType="Scalar" Name="Temperature" parent_id="Temperature sensor" id="1" class="Property"></div>
+<div Name="Regulated Light" id="2" class="DeviceType"></div>
+<div RefValueType="1" ValueType="ENUM" Name="State" parent_id="Regulated Light" id="1" class="Property"></div>
+<div RefValueType="2" ValueType="Scalar" Name="Itensity" parent_id="Regulated Light" id="2" class="Property"></div>
+<div Name="Simple Light" id="3" class="DeviceType"></div>
+<div RefValueType="1" ValueType="ENUM" Name="State" parent_id="Simple Light" id="1" class="Property"></div>
+<div Name="Fire Alarm" id="4" class="DeviceType"></div>
+<div RefValueType="1" ValueType="ENUM" Name="State" parent_id="Fire Alarm" id="1" class="Property"></div>
+</div>
+</body>
+</html><script>check_all()</script>

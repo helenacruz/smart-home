@@ -16,7 +16,7 @@
 
 <ScalarValueTypeList>
 <ScalarValueType>
-<ID></ID>
+<ID>1</ID>
 <Name>Temperature</Name>
 <Units>"ºC"</Units>
 <MinValue>0</MinValue>

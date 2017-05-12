@@ -2,20 +2,20 @@ package tecnico.ai.smarthome.domobus;
 
 public class Property extends PropertyType
 {
-    private Value value;
+    private String value;
 
-    public Property(String name, AccessMode accessMode, ValueType valueType, Value value)
+    public Property(String name, AccessMode accessMode, String valueType, String value)
     {
         super(name, accessMode, valueType);
         this.value = value;
     }
 
-    public Value getValue()
+    public String getValue()
     {
         return value;
     }
 
-    public void setValue(Value value)
+    public void setValue(String value)
     {
         this.value = value;
     }

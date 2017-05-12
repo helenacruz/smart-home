@@ -2,35 +2,35 @@ package tecnico.ai.smarthome.domobus;
 
 public class Scalar extends Value
 {
-    private int min;
-    private int max;
+    private String min;
+    private String max;
     private String units;
-    private Conversion conversion;
+    private String name;
 
-    public Scalar(int min, int max, String units, Conversion conversion)
+    public Scalar(String string, String string2, String units, String name)
     {
-        this.min = min;
-        this.max = max;
+        this.min = string;
+        this.max = string2;
         this.units = units;
-        this.conversion = conversion;
+        this.setName(name);
     }
 
-    public int getMin()
+    public String getMin()
     {
         return min;
     }
 
-    public void setMin(int min)
+    public void setMin(String min)
     {
         this.min = min;
     }
 
-    public int getMax()
+    public String getMax()
     {
         return max;
     }
 
-    public void setMax(int max)
+    public void setMax(String max)
     {
         this.max = max;
     }
@@ -45,13 +45,11 @@ public class Scalar extends Value
         this.units = units;
     }
 
-    public Conversion getConversion()
-    {
-        return conversion;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setConversion(Conversion conversion)
-    {
-        this.conversion = conversion;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 }

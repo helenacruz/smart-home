@@ -3,8 +3,7 @@
 Namespace tells the xlst processor about which 
 element is to be processed and which is used for output purpose only 
 -->
-<xsl:stylesheet version = "1.0" 
-xmlns:xsl = "http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version = "2.0" xmlns:xsl = "http://www.w3.org/1999/XSL/Transform">
 
 <!-- xsl template declaration:  
 template tells the xlst processor about the section of xml 
@@ -20,12 +19,11 @@ tell processor to process the entire document with this template.
 	   <html>
 	   <script src="Ui.js"/>
 	   <head>
-	  
-	  
+		
 	  <title>Smart home</title>
 	  
 	  <style>
-header, footer
+	  header, footer
 {
     width: 100%;
 }
@@ -76,20 +74,16 @@ html, body
 {
 	display: inline-block;
     margin-top: 3%;
-    width: 25%;
+    width: 20%;
 	height: 50%;
     font-family: 'Source Sans Pro', sans-serif;
-    text-align: center;
-    vertical-align: center;
-    text-align: center;
 	border-spacing: 20px;
 }
 
 .devices
 {
     font-size: 120%;
-    float: center;
-    padding-left: 100px;
+    padding-left: 50px;
 }
 
 .switch 
@@ -179,14 +173,12 @@ display: none;
 	text-align: center;	
 }
 
-.buttons td
-{
-	vertical-align: middle;
-	text-align: center;
-	height: 50px;
-}
 
 </style>
+	  
+<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet"/>
 	</head>
 	<body>
 	<header>
@@ -203,22 +195,18 @@ display: none;
 	
 	 <xsl:for-each select="DomobusSystem/DeviceList/Device">
 	 <xsl:sort select="ID"/>
-	<table class="devices" category="{RefDevicetype}" id="{ID}" name="{Name}">
-	
-    <tr>
-        <th><xsl:value-of select="Name"/></th>
-    </tr>
-
 
 				<xsl:if test="RefDevicetype=2"><!--Regul Light-->
-				 <tr>
-				 	<h1></h1>
-				 	<table class="buttons">
+				<table class="devices" category="{RefDevicetype}" value="false" value_m="false" value_i="0" id="{ID}" name="{Name}">
+	
+					<th padding-left="10px"><xsl:value-of select="Name"/></th>
+
+				 <tr id= "buttons">
 				 		<tr>
 				 			<td><span>OFF</span></td>
 				 			<td>
 				 				<label class="switch">
-								<input   type="checkbox" id="regul_switch" oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)"/>
+								<input   type="checkbox" id="regul_switch" oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)"/>
 								<div class="slider round"></div>
 								</label>
 				 			</td>
@@ -228,7 +216,7 @@ display: none;
 				 			<td><span>MANUAL</span></td>
 				 			<td>
 				 				<label class="switch">
-								<input type="checkbox" id="regul_switch2"  oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id,1,-1)"/>
+								<input type="checkbox" id="regul_switch2"  oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,1,-1)"/>
 								<div class="slider round"></div>
 								</label>
 				 			</td>
@@ -237,46 +225,61 @@ display: none;
 				 		<tr>
 				 			<td><span>0</span></td>
 				 			<td>
-				 				<input type="range" id="regul_intensity" min="0" value="0" max="100" step="10"  oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id,3,this.value)" />
+				 				<input type="range" id="regul_intensity" min="0" value="0" max="100" step="10"  oninput="update(this.parentNode.parentNode.parentNode.parentNode.id,3,this.value)" />
 				 			</td>
 				 			<td><span>100</span></td>
 				 		</tr>
-				 	</table>
 				</tr>
-
-				<tr>
-				</tr>
+				</table>
 				</xsl:if>
+				
 				<xsl:if test="RefDevicetype=3"><!--Simple Light-->
+				<table class="devices" category="{RefDevicetype}" value="false" id="{ID}" name="{Name}">
+	
 				<tr>
-					<h1></h1>
-						<table class="buttons">
+				<th padding-left="10px"><xsl:value-of select="Name"/></th>
+				</tr>
+				<tr>
 				 		<tr>
 				 			<td><span>OFF</span></td>
 				 				<td><label class="switch">
-								<input type="checkbox" id="simple_switch"  oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)"/>
+								<input type="checkbox" id="simple_switch"  oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)"/>
 								<div class="slider round"></div>
 								</label></td>
 				 			<td><span>ON</span></td>
 				 		</tr>
-				 	</table>
 
 				</tr>
+				</table>
 				</xsl:if>
 
 				<xsl:if test="RefDevicetype=1"><!--Temp sensor-->
+				<table class="devices" category="{RefDevicetype}" id="{ID}" name="{Name}">
+	
 				<tr>
-				<td><p class="simple" id="temp_value">21 C</p></td>
+					<th><xsl:value-of select="Name"/></th>
 				</tr>
+				<tr>
+				</tr>
+				<tr>
+				<td><p class="simple" id="temp_value">21 DC</p></td>
+				</tr>
+				</table>
 				</xsl:if>
 
 				<xsl:if test="RefDevicetype=4"><!--Fire sensor-->
+				<table class="devices" category="{RefDevicetype}" id="{ID}" name="{Name}">
+				
+				<tr>
+					<th><xsl:value-of select="Name"/></th>
+				</tr>
+
 				<tr>
 				<td><p class="simple" id="alarm">I am always Alert...</p></td>
 				</tr>
+				</table>
 				</xsl:if>     
     <!-- rest of the table-->
-</table>
 </xsl:for-each>	   
 
 
@@ -296,12 +299,14 @@ display: none;
 <xsl:for-each select="DomobusSystem/DeviceTypeList/DeviceType">	  
 <div class= "DeviceType" id="{ID}" Name="{Name}"/> 	  
 <xsl:for-each select="PropertyList/Property">
-<div class="Property" id="{ID}" Name="{Name}" ValueType="{ValueType}" RefValueType="{RefValueType}"/>
+<div class="Property" id="{ID}" parent_id="{../../Name}" Name="{Name}" ValueType="{ValueType}" RefValueType="{RefValueType}"/>
 </xsl:for-each>
 </xsl:for-each>
 </div>
 		  
  </body>
 	  </html>
+	  <script>check_all()</script>
+	  
    </xsl:template>  
 </xsl:stylesheet>
