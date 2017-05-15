@@ -176,8 +176,9 @@ display: none;
 </table>
 </header>
 <table name="Ceiling lamp" id="1" value_i="0" value_m="false" value="false" category="2" class="devices">
+<tr>
 <th padding-left="10px">Ceiling lamp</th>
-<tr id="buttons">
+</tr>
 <tr>
 <td><span>OFF</span></td><td><label class="switch"><input oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)" id="regul_switch" type="checkbox">
 <div class="slider round"></div>
@@ -191,18 +192,15 @@ display: none;
 <tr>
 <td><span>0</span></td><td><input oninput="update(this.parentNode.parentNode.parentNode.parentNode.id,3,this.value)" step="10" max="100" value="0" min="0" id="regul_intensity" type="range"></td><td><span>100</span></td>
 </tr>
-</tr>
 </table>
 <table name="Table lamp" id="2" value="false" category="3" class="devices">
 <tr>
 <th padding-left="10px">Table lamp</th>
 </tr>
 <tr>
-<tr>
 <td><span>OFF</span></td><td><label class="switch"><input oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)" id="simple_switch" type="checkbox">
 <div class="slider round"></div>
 </label></td><td><span>ON</span></td>
-</tr>
 </tr>
 </table>
 <table name="Temperature" id="3" category="1" class="devices">

@@ -198,10 +198,9 @@ display: none;
 
 				<xsl:if test="RefDevicetype=2"><!--Regul Light-->
 				<table class="devices" category="{RefDevicetype}" value="false" value_m="false" value_i="0" id="{ID}" name="{Name}">
-	
+				<tr>
 					<th padding-left="10px"><xsl:value-of select="Name"/></th>
-
-				 <tr id= "buttons">
+				</tr>
 				 		<tr>
 				 			<td><span>OFF</span></td>
 				 			<td>
@@ -229,7 +228,6 @@ display: none;
 				 			</td>
 				 			<td><span>100</span></td>
 				 		</tr>
-				</tr>
 				</table>
 				</xsl:if>
 				
@@ -240,14 +238,12 @@ display: none;
 				<th padding-left="10px"><xsl:value-of select="Name"/></th>
 				</tr>
 				<tr>
-				 		<tr>
 				 			<td><span>OFF</span></td>
 				 				<td><label class="switch">
 								<input type="checkbox" id="simple_switch"  oninput="update(this.parentNode.parentNode.parentNode.parentNode.parentNode.id,2,-1)"/>
 								<div class="slider round"></div>
 								</label></td>
 				 			<td><span>ON</span></td>
-				 		</tr>
 
 				</tr>
 				</table>
