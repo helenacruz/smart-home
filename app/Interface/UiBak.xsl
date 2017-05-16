@@ -192,7 +192,7 @@ display: none;
     </table>
 	</header>
 	
-	
+	<div align="center">
 	 <xsl:for-each select="DomobusSystem/DeviceList/Device">
 	 <xsl:sort select="ID"/>
 
@@ -299,8 +299,9 @@ display: none;
 </xsl:for-each>
 </xsl:for-each>
 </div>
-		  
+</div>		  
  </body>
+
 	  </html>
 	  <script>check_all()</script>
 	  
