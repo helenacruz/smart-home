@@ -76,6 +76,8 @@ public class Server extends Thread
         String URL= "file:///"+file.getAbsolutePath();
 		HtmlPage page = webClient.getPage(URL);
 		
+		System.out.println("ID: " + id + " Cat: " + category + " Value: " + new_value);
+		
 		String javaScriptCode="change(" + String.valueOf(id) + "," +"'"+category+"'" +","+String.valueOf(new_value)+")";
         webClient.waitForBackgroundJavaScript(10000);
         ScriptResult result = page.executeJavaScript(javaScriptCode);
@@ -87,7 +89,7 @@ public class Server extends Thread
         String text = result.toString();
         text=text.substring(20);
         text="<!DOCTYPE HTML>" + "\n" + text;
-        text=text.substring(0,text.length()-88);
+        text=text.substring(0,text.length()-96);
         PrintStream out = new PrintStream(new FileOutputStream(file));
         out.print(text);
         

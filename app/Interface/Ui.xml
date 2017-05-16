@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type = "text/xsl" href = "Ui.xsl"?> 
+
+<DomobusSystem ID="1" Name="Arduino_Smarthome" Version="1.0" Date="09/04/2017">
+
+<House>
+<ID>98</ID>
+<Name>SMART HOME</Name>
+<DivisionList>
+<Division>
+<ID>1</ID>
+<Name>Living Room</Name>
+</Division>
+</DivisionList>
+</House>
+
+<ScalarValueTypeList>
+<ScalarValueType>
+<ID>1</ID>
+<Name>Temperature</Name>
+<Units>"ºC"</Units>
+<MinValue>0</MinValue>
+<MaxValue>40</MaxValue>
+<Step>1</Step>
+</ScalarValueType>
+<ScalarValueType>
+<ID>2</ID>
+<Name>Itensity</Name>
+<Units>"%"</Units>
+<MinValue>0</MinValue>
+<MaxValue>100</MaxValue>
+<Step>10</Step>
+</ScalarValueType>
+</ScalarValueTypeList>
+
+<EnumeValueTypeList>
+<EnumeValueType>
+<ID>1</ID>
+<Name>State</Name>
+<Enumarated>
+<Name>"off</Name>
+<Value>0</Value>
+</Enumarated>
+<Enumarated>
+<Name>"on</Name>
+<Value>1</Value>
+</Enumarated>
+</EnumeValueType>
+</EnumeValueTypeList>
+
+<DeviceTypeList>
+<DeviceType>
+<ID>1</ID>
+<Name>Temperature sensor</Name>
+<PropertyList>
+<Property>
+<ID>1</ID>
+<Name>Temperature</Name>
+<ValueType>Scalar</ValueType>
+<RefValueType>1</RefValueType>
+</Property>
+</PropertyList>
+</DeviceType>
+<DeviceType>
+<ID>2</ID>
+<Name>Regulated Light</Name>
+<PropertyList>
+<Property>
+<ID>1</ID>
+<Name>State</Name>
+<ValueType>ENUM</ValueType>
+<RefValueType>1</RefValueType>
+</Property>
+<Property>
+<ID>2</ID>
+<Name>Itensity</Name>
+<ValueType>Scalar</ValueType>
+<RefValueType>2</RefValueType>
+</Property>
+</PropertyList>
+</DeviceType>
+<DeviceType>
+<ID>3</ID>
+<Name>Simple Light</Name>
+<PropertyList>
+<Property>
+<ID>1</ID>
+<Name>State</Name>
+<ValueType>ENUM</ValueType>
+<RefValueType>1</RefValueType>
+</Property>
+</PropertyList>
+</DeviceType>
+<DeviceType>
+<ID>4</ID>
+<Name>Fire Alarm</Name>
+<PropertyList>
+<Property>
+<ID>1</ID>
+<Name>State</Name>
+<ValueType>ENUM</ValueType>
+<RefValueType>1</RefValueType>
+</Property>
+</PropertyList>
+</DeviceType>
+</DeviceTypeList>
+
+<DeviceList>
+<Device>
+<ID>3</ID>
+<RefDevicetype>1</RefDevicetype>
+<Name>Temperature</Name>
+<RefDivision>1</RefDivision>
+</Device>
+<Device>
+<ID>1</ID>
+<RefDevicetype>2</RefDevicetype>
+<Name>Ceiling lamp</Name>
+<RefDivision>1</RefDivision>
+</Device>
+<Device>
+<ID>2</ID>
+<RefDevicetype>3</RefDevicetype>
+<Name>Table lamp</Name>
+<RefDivision>1</RefDivision>
+</Device>
+<Device>
+<ID>4</ID>
+<RefDevicetype>4</RefDevicetype>
+<Name>Fire alarm</Name>
+<RefDivision>1</RefDivision>
+</Device>
+</DeviceList>
+</DomobusSystem>
