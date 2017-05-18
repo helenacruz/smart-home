@@ -180,13 +180,11 @@ void read_light()
     }
   }
 
-  int value = 1023 - (light_value * 10.23);
-
   if (auto_mode && white_led_on) {
-    analogWrite(white_led, value);
-    if (value != white_led_value) {
+    analogWrite(white_led, map(light, 0, 100, 0, 255));
+    if (light != white_led_value) {
       bitSet(device_state, white_led_id);
-      white_led_value = value;
+      white_led_value = light;
     }
   }
 }
@@ -256,6 +254,7 @@ int read_flame()
       Serial.println("Fire");
     }
     fire = true;
+    tone(buzzer, 1000);
     return ON_FIRE;
   }
   else {
@@ -449,7 +448,7 @@ void check_status()
 void do_something(int device, int property, int value) 
 {
   if (device == blue_led_id) {
-    if (property == 1) { // state
+    if (property == 2) { // state
       if (value == 1) {
         if (!blue_led_on) {
           do_blue_button();
@@ -470,7 +469,7 @@ void do_something(int device, int property, int value)
     // no more options for blue led
   }
   else if (device == white_led_id) {
-    if (property == 1) { // state
+    if (property == 2) { // state
       if (value == 1) {
         if (!white_led_on) {
           do_white_button();
@@ -488,7 +487,7 @@ void do_something(int device, int property, int value)
         }
       }
     }
-    else if (property == 2) { // intensity
+    else if (property == 3) { // intensity
       if (!auto_mode && white_led_on) {
         pc_mode = true;
         if (pot_value != value) {
@@ -501,7 +500,7 @@ void do_something(int device, int property, int value)
         }
       }
     }
-    else if (property == 3) { // mode
+    else if (property == 1) { // mode
       if (value == AUTO) {
         auto_mode = true;
       }

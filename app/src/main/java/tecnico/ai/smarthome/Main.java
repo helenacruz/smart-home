@@ -1,5 +1,6 @@
 package tecnico.ai.smarthome;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -16,52 +17,36 @@ import com.sun.net.httpserver.HttpServer;
 
 import tecnico.ai.smarthome.communication.Message;
 import tecnico.ai.smarthome.communication.SerialPortReader;
+import tecnico.ai.smarthome.ui.App;
 import tecnico.ai.smarthome.ui.Server;
+import tecnico.ai.smarthome.ui.SmartHome;
 
 public class Main
 {
     @SuppressWarnings("restriction")
-	public static void main(String[] args) throws FailingHttpStatusCodeException, MalformedURLException, IOException, TransformerException
+	public static void main(String[] args)
+			throws FailingHttpStatusCodeException, MalformedURLException, IOException, TransformerException
     {
-        // SerialPortReader serialPortReader = new SerialPortReader();
-
-        // TODO separate thread for the server
-    	Server serv = new Server();
-    	 HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-         server.createContext("/r.html", new HttpHandler() {
-     		public void handle(HttpExchange t) throws IOException{
-             String[] params = t.getRequestURI().getQuery().split("&");
-             System.out.println("recebido");
-             
-             int id = Integer.parseInt(params[0].split("=")[1]);
-             int category = Integer.parseInt(params[0].split("=")[1]);
-             int value = Integer.parseInt(params[2].split("=")[1]);
-             
-             if(category==1)
-             	category=2;
-             else if(category==2)
-             	category=1;
-             t.sendResponseHeaders(200,0);
-             
-             //Message msg =new Message(id,category,value);
-             //System.out.println("sending "+id + category + value +"to "+ serialPortReader);
-             //serialPortReader.sendMessage(msg.toArduinoMessage()); 
-             OutputStream os = t.getResponseBody();
-             os.close();
-         }
-         
-         });
-         server.setExecutor(null); // creates a default executor
-    	 server.start();
-    	 
+    	ArrayList<String> messages = new ArrayList<>();
+    	SerialPortReader serialPort = new SerialPortReader();
+    	App app = new App(messages);
+    	EventQueue.invokeLater(app);
     	
-        while (true) {
-        /*    serialPortReader.run(); // thread for the serial port
-            Message message = serialPortReader.getMessage();
-            if (message != null) {//send to HTML
-               serv.update(message.getDevice(),message.getProperty(),message.getValue());
-            }
-            */
-        }
+    	while (true) {
+    		// System.out.println("here");
+    		serialPort.run();
+    		Message message = serialPort.getMessage();
+    		if (message != null) {
+    			System.out.println(message);
+    			app.getInstance().update(message.getDevice(), message.getProperty(), message.getValue());
+    		}
+    		if (!messages.isEmpty()) {
+    			String arduinoMessage = messages.get(0);
+    			System.out.println("TO SEND: " + arduinoMessage);
+    			messages.remove(0);
+    			serialPort.sendMessage(arduinoMessage);
+    		}
+    	}
     }
+   
 }

@@ -1,5 +1,6 @@
-# C++ files
+*.DS_Store
 
+# C++ files
 # Compiled Object files
 *.slo
 *.lo

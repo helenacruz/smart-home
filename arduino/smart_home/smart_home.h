@@ -23,14 +23,14 @@ const int white_pot = A1;
 
 /* sensors/actuators IDs */
 
-const int flame_id = 0;
-const int white_button_id = 1;
-const int blue_button_id = 2;
-const int mode_button_id = 3;
-const int white_pot_id = 4;
-const int temp_id = 5;
-const int blue_led_id = 6;
-const int white_led_id = 7;
+const int flame_id = 4;
+const int white_button_id = 6;
+const int blue_button_id = 7;
+const int mode_button_id = 0;
+const int white_pot_id = 5;
+const int temp_id = 3;
+const int blue_led_id = 2;
+const int white_led_id = 1;
 
 /* property values */
 
@@ -71,8 +71,8 @@ struct button
 
 /* device structs */
 
-const struct led blue_led_t = { blue_led_id, 1, 2, 3 };
-const struct led white_led_t = { white_led_id, 1, 2, 3 };
+const struct led blue_led_t = { blue_led_id, 2, 3, 1 };
+const struct led white_led_t = { white_led_id, 2, 3, 1 };
 const struct flame flame_t = { flame_id, 1 };
 const struct sensor temp_sensor_t = { temp_id, 1 };
 const struct button blue_button_t = { blue_button_id, 1 };

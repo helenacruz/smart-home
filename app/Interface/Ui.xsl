@@ -12,9 +12,11 @@ In our case, it is matching document root element and will
 tell processor to process the entire document with this template. 
 --> 
 <xsl:template match = "/"> 
-	<!--HTML tags 
-	Used for formatting purpose. Processor will skip them and browser 
-    will simply render them. -->
+<!--
+HTML tags 
+Used for formatting purpose. Processor will skip them and browser 
+will simply render them.
+-->
 <html>
 <head>
 		
@@ -139,7 +141,7 @@ tell processor to process the entire document with this template.
 						</div>
 						
 						<div class="row">
-							<div class="simple" id="temp_value">21 ºC</div>
+							<div class="simple" id="temp_value"></div>
 						</div>
 					</div>
 				</div> <!-- Temperature sensors -->
